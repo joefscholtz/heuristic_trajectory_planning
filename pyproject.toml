@@ -1,0 +1,23 @@
+[project]
+name = "heuristic-trajectory-planning"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { name = "Joe Ferreira Scholtz", email = "joefscholtz@gmail.com" },
+    { name = "Matheus Schein", email = "" }
+]
+requires-python = ">=3.12"
+dependencies = [
+    "pre-commit>=4.6.2",
+]
+
+[project.scripts]
+heuristic-trajectory-planning = "heuristic_trajectory_planning:main"
+
+[build-system]
+requires = ["uv_build>=0.12.0,<0.13.0"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-root = ""

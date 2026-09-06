@@ -1,0 +1,25 @@
+# C/C++/CMake
+.clangd/
+compile_commands.json
+build/
+
+# Python / uv
+.venv*/
+**__pycache__/**
+**__pycache__**
+.uv/
+#Pyinstaller
+*.spec
+
+# Others
+.env
+**/cache
+**/.cache
+**/*.bak
+**/*.backup
+**/*.zip
+**/*.log
+node_modules
+build
+release*
+
