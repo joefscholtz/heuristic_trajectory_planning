@@ -9,7 +9,9 @@ authors = [
 ]
 requires-python = ">=3.12"
 dependencies = [
+    "datamodel-code-generator>=0.77.0",
     "pre-commit>=4.6.2",
+    "yq>=4.1.2",
 ]
 
 [project.scripts]
