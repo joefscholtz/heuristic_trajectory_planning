@@ -20,6 +20,11 @@ protobuf_generate(
     OUT_VAR PROTO_PY_FILES
 )
 
+# Compile the generated .pb.cc files into a real static library
+add_library(config_proto STATIC ${PROTO_CXX_FILES})
+target_link_libraries(config_proto PUBLIC protobuf::libprotobuf)
+target_include_directories(config_proto PUBLIC ${CMAKE_CURRENT_BINARY_DIR})
+
 # Target to trigger code generation during the build
 add_custom_target(generate_schemas ALL
     DEPENDS ${PROTO_CXX_FILES} ${PROTO_PY_FILES}
