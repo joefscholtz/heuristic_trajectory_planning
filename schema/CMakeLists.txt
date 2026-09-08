@@ -1,19 +1,26 @@
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cpp)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python)
 
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/cpp/OptimizationConfig.hpp
-    COMMAND quicktype -s schema ${CMAKE_CURRENT_SOURCE_DIR}/main_config.yaml -o ${CMAKE_CURRENT_BINARY_DIR}/cpp/OptimizationConfig.hpp --lang cpp
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/main_config.yaml ${CMAKE_CURRENT_SOURCE_DIR}/models.yaml
+find_package(Protobuf CONFIG REQUIRED)
+
+# Enable compatibility mode so protobuf_generate works out-of-the-box
+set(protobuf_MODULE_COMPATIBLE TRUE)
+
+# generate C++ headers (.pb.h / .pb.cc) from config.proto
+protobuf_generate(
+    LANGUAGE cpp
+    PROTOS config.proto
+    OUT_VAR PROTO_CXX_FILES
 )
 
-add_custom_command(
-    OUTPUT ${CMAKE_CURRENT_BINARY_DIR}/python/config_models.py
-    COMMAND uv run datamodel-codegen --input ${CMAKE_CURRENT_SOURCE_DIR}/main_config.yaml --input-file-type jsonschema --output ${CMAKE_CURRENT_BINARY_DIR}/python/config_models.py
-    DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/main_config.yaml ${CMAKE_CURRENT_SOURCE_DIR}/models.yaml
+# generate Python modules (_pb2.py) from config.proto
+protobuf_generate(
+    LANGUAGE python
+    PROTOS config.proto
+    OUT_VAR PROTO_PY_FILES
 )
 
+# Target to trigger code generation during the build
 add_custom_target(generate_schemas ALL
-    DEPENDS ${CMAKE_CURRENT_BINARY_DIR}/cpp/OptimizationConfig.hpp
-            ${CMAKE_CURRENT_BINARY_DIR}/python/config_models.py
+    DEPENDS ${PROTO_CXX_FILES} ${PROTO_PY_FILES}
 )

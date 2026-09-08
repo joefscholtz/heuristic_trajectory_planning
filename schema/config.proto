@@ -1,0 +1,31 @@
+syntax = "proto3";
+package htp.config;
+
+import "google/protobuf/any.proto";
+
+enum Strategy {
+  STRATEGY_UNSPECIFIED = 0;
+  STRATEGY_ADMIN = 1;
+  STRATEGY_EDITOR = 2;
+  STRATEGY_VIEWER = 3;
+}
+
+message ModelLinear {
+  double slope = 1;
+}
+
+message ModelNonLinear {
+  int32 polynomial_degree = 1;
+}
+
+message OptimizationConfig {
+  int32 iterations = 1;
+  double epsilon = 2;
+  Strategy strategy = 3;
+  
+  google.protobuf.Any mutation_params = 4;
+  oneof model {
+    ModelLinear model_linear = 5;
+    ModelNonLinear model_non_linear = 6;
+  }
+}

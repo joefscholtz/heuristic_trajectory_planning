@@ -14,29 +14,36 @@ void load_config(const std::string &filepath) {
   }
   std::stringstream buffer;
   buffer << input.rdbuf();
-  std::string json_str = buffer.str();
 
-  google::protobuf::util::JsonParseOptions options;
   auto status =
-      google::protobuf::util::JsonStringToMessage(json_str, &config, options);
-
+      google::protobuf::util::JsonStringToMessage(buffer.str(), &config);
   if (!status.ok()) {
     std::cerr << "Failed to parse JSON config: " << status.message() << "\n";
     return;
   }
 
-  std::cout << "Iterations: " << config.iterations() << "\n";
-  std::cout << "Epsilon: " << config.epsilon() << "\n";
+  std::cout << "[C++] Iterations: " << config.iterations() << "\n";
+  std::cout << "[C++] Epsilon: " << config.epsilon() << "\n";
 
   switch (config.model_case()) {
   case htp::config::OptimizationConfig::kModelLinear:
-    std::cout << "Slope: " << config.model_linear().slope() << "\n";
+    std::cout << "[C++] Model: Linear (slope: " << config.model_linear().slope()
+              << ")\n";
     break;
   case htp::config::OptimizationConfig::kModelNonLinear:
-    std::cout << "Degree: " << config.model_non_linear().polynomial_degree()
-              << "\n";
+    std::cout << "[C++] Model: NonLinear (degree: "
+              << config.model_non_linear().polynomial_degree() << ")\n";
     break;
   default:
-    std::cout << "No model configured\n";
+    std::cout << "[C++] No model configured\n";
   }
+}
+
+int main(int argc, char **argv) {
+  if (argc < 2) {
+    std::cerr << "Usage: " << argv[0] << " <path_to_json_config>\n";
+    return 1;
+  }
+  load_config(argv[1]);
+  return 0;
 }
