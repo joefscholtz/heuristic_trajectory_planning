@@ -1,4 +1,3 @@
-# Create the output directories so the tools don't fail trying to write to non-existent folders
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/cpp)
 file(MAKE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/python)
 
