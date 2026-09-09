@@ -1,0 +1,10 @@
+{
+  "iterations": 1000,
+  "epsilon": 0.0001,
+  "strategy": "STRATEGY_EDITOR",
+  "mutationParams": {
+    "@type": "type.googleapis.com/htp.plugins.SuperMutationParams",
+    "adaptiveRate": 0.05,
+    "chromosomalCrossover": true
+  }
+}

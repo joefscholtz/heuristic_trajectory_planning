@@ -1,0 +1,7 @@
+syntax = "proto3";
+package htp.plugins;
+
+message SuperMutationParams {
+  double adaptive_rate = 1;
+  bool chromosomal_crossover = 2;
+}
