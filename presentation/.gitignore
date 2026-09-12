@@ -1,0 +1,20 @@
+*.aux
+*.*latexmk
+*.fls
+*.log
+*.out
+#ignores pdf just in the root dir
+/*.pdf
+*.gz
+*.zip
+*.tar
+*.rar
+*.bcf
+*.nav
+*.run.xml
+*.snm
+*.toc
+*.vrb
+*.bbl
+*.blg
+svg-inkscape
