@@ -1,0 +1,44 @@
+%! Tex program = lualatex
+\documentclass[aspectratio=169]{beamer}
+
+\input{preamble}
+
+\definecolor{grey}{HTML}{c8c8c8} 
+
+\colorlet{primarycolor}{white}
+\colorlet{invertedprimarycolor}{black}
+\colorlet{secondarycolor}{grey}
+\colorlet{accentcolor}{cardinalred}
+\colorlet{secondaryaccentcolor}{white}
+\colorlet{emailcolor}{coolgrey}
+
+\title{Otimização heurística aplicada à busca de trajetórias}
+\subtitle{com robôs móveis não holonômicos e manipuladores robóticos}
+\institute{UFRGS - Universidade Federal do Rio Grande do Sul}
+% \useInstituteLogo{img/logo_RGB.png}
+\useInstituteLogo{\includegraphics[height=2cm]{img/LOGO-UFRGS-01.png}}
+\useInstituteThumb{img/logo_RGB.png}
+% \useInstituteThumb{img/logo_RGB_negative.png}
+% \useInstituteThumb{img/LOGO-UFRGS-01.png}
+\author{Joe Ferreira Scholtz\\Matheus Schein C.C.}
+% \email{joefscholtz@gmail.com}
+\date{Set 2026}
+\toctittle{Sumário}
+
+\begin{document}
+
+\begin{frame}
+    \maketitle
+\end{frame}
+
+\InsertTocFrame
+
+\include{slides/introducao}
+\include{samples/equation}
+\include{samples/bullet}
+\include{samples/figure}
+\include{samples/tikz}
+\include{samples/algorithm}
+\include{samples/block}
+
+\end{document}

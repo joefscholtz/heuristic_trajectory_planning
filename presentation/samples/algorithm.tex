@@ -1,0 +1,34 @@
+\section{Algorithm}
+
+\begin{frame}[fragile]{Pseudocode style}
+
+An example of algorithm in pseudocode style
+
+\vspace{3mm}
+
+{\centering
+        \scalebox{0.75}{
+            \begin{minipage}{\columnwidth}
+                \begin{algorithm}[H]
+                    \caption{RRT}\label{alg:RRT}
+                    \begin{algorithmic}[1]
+                        \State $V \gets \{q_{inint}\}$;
+                        \State $ E \gets \emptyset$;
+                        \For{$i = 1, \cdots, n$}
+                            \State $q_{rand} \gets \texttt{SampleFree}_i$;
+                            \State $q_{nearest} \gets \texttt{Nearest}(G=(V,E),q_{rand})$;
+                            \State $q_{new} \gets \texttt{Steer}(q_{nearest}, q_{rand})$;
+                            \If{$\texttt{ObstacleFree}(q_{nearest}, q_{new})$}
+                                \State $V \gets V \cup \{ q_{new}\}$;
+                                \State $E \gets E \cup \{(q_{nearest}, q_{new}\})$;
+                            \EndIf
+                        \EndFor
+                        \State \Return $G = (V,E)$;
+                    \end{algorithmic}
+                \end{algorithm}
+            \end{minipage}
+            \par
+        }
+    
+}
+\end{frame}
