@@ -18,6 +18,31 @@ def load_config(path):
     return config
 
 
+class GeneticAlgorithm:
+    def __init__(
+        self,
+        initialization_fn,
+        termination_fn,
+        recombination_fn,
+        mutation_fn,
+        selection_fn,
+    ):
+        self.initialization_fn = initialization_fn
+        self.termination_fn = termination_fn
+        self.recombination_fn = recombination_fn
+        self.mutation_fn = mutation_fn
+        self.selection_fn = selection_fn
+
+    def run(self):
+        generation = 0
+        population = self.initialization_fn()
+
+        while not self.termination_fn(generation, population):
+            recombination = self.recombination_fn(population)
+            mutation = self.mutation_fn(population)
+            population = self.selection_fn(population, recombination, mutation)
+
+
 if __name__ == "__main__":
     print("Hello from heuristic_trajectory_planning.py!")
     load_config(SCRIPT_DIR / "config" / "ex_config.json")
