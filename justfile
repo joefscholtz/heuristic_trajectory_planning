@@ -11,17 +11,20 @@ default:
   just --list
 
 init:
+  git submodule update --init --recursive
   uv sync
+  external/vcpkg/bootstrap-vcpkg.sh
 
 # pre-commit-init:
 #   uv run pre-commit install --hook-type pre-commit --hook-type pre-push
 
 build:
-  #export $(cat .env | xargs) && build
-  @echo "Not implemented yet."
+  cmake --preset default
+  cmake --build --preset default --parallel
+  ln -sf build/compile_commands.json .
 
 run:
-  @echo "Not implemented yet."
+  uv run examples/example_config/python/main.py
 
 clean:
   @echo "Not implemented yet."

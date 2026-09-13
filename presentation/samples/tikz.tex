@@ -1,0 +1,59 @@
+\section{TikZ}
+\begin{frame}{CircuiTikZ}
+
+  wow such circuit.
+
+  \begin{figure}[H]
+      \centering
+      \scalebox{0.75}{
+          \begin{circuitikz}[]
+              \draw
+                  (0,0) node[left]{u(t)}
+                  to[R,l=$R$,o-] ++ (2,0)  node[right] (R) {}
+                  to[C,l=$C_1$,-*] ++ (2,0) node[anchor = south west] (y) {y(t)}
+                  to[C,l=$C_2$] ++ (2,0) node[tlground,rotate=90]{}
+              ;
+              \draw
+                  (2,0) to[short] ++ (0,2)
+                  to[R,l=$R_c$] ++ (2,0)
+                  to[short] ++ (0,-2)
+                  to[R,l=$R_L$] ++ (0,-2)
+                  to[L,l=$L$] ++ (2,0)
+                  node[tlground,rotate=90] {}
+              ;
+          \end{circuitikz}
+      }
+      \caption{Caption}
+      \label{fig:my_label}
+  \end{figure}
+\end{frame}
+
+
+\subsection{tikz2}
+
+\begin{frame}{CircuiTikZ2}
+
+  \begin{figure}[H]
+      \centering
+      \scalebox{0.75}{
+          \begin{circuitikz}[]
+              \draw
+                  (0,0) node[left]{u(t)}
+                  to[R,l=$R$,o-] ++ (2,0)  node[right] (R) {}
+                  to[C,l=$C_1$,-*] ++ (2,0) node[anchor = south west] (y) {y(t)}
+                  to[C,l=$C_2$] ++ (2,0) node[tlground,rotate=90]{}
+              ;
+              \draw
+                  (2,0) to[short] ++ (0,2)
+                  to[R,l=$R_c$] ++ (2,0)
+                  to[short] ++ (0,-2)
+                  to[R,l=$R_L$] ++ (0,-2)
+                  to[L,l=$L$] ++ (2,0)
+                  node[tlground,rotate=90] {}
+              ;
+          \end{circuitikz}
+      }
+      \caption{Caption}
+      \label{fig:my_label2}
+  \end{figure}
+\end{frame}

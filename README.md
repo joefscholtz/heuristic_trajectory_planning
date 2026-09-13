@@ -11,10 +11,13 @@ DESCRIPTION HERE!!
 │       └── .../                          #
 │   └── 3D/                               #
 │       └── .../                          #
+├── external/                             # External dependencies
 ├── heuristic_trajectory_planning/        # Python module
 │   └── __init__.py                       #
-│   └── heuristic_trajectory_planning.py  #
-├── schema/                               #
+│   └── core.py                           #
+├── heuristic_trajectory_planning_lib/    # C++ library
+├── presentation/                         # LaTeX Beamer presentation
+├── schema/                               # Configuration Schema
 └── justfile                              # Recipes
 ```
 
@@ -22,6 +25,7 @@ DESCRIPTION HERE!!
 
 Requirements:
 
+- git
 - [uv](https://docs.astral.sh/uv/) (Required, Python manager)
 - [just](https://github.com/casey/just) (Optional, Recipes)
 
@@ -34,7 +38,9 @@ just init
 without just
 
 ```bash
+git submodule update --init --recursive
 uv sync
+external/vcpkg/bootstrap-vcpkg.sh # or .bat if on windows
 ```
 
 ## Build
@@ -42,13 +48,15 @@ uv sync
 using just:
 
 ```bash
-just build # Not implemented yet
+just build
 ```
 
 without just
 
 ```bash
-# Not implemented yet
+  cmake --preset default
+  cmake --build --preset default --parallel
+  ln -sf build/compile_commands.json .
 ```
 
 ## Running examples
@@ -64,6 +72,8 @@ without just
 ```bash
 # Not implemented yet
 ```
+
+## How to use the library
 
 ## TODO
 

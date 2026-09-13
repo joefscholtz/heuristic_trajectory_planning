@@ -1,0 +1,47 @@
+syntax = "proto3";
+package htp.config;
+
+import "google/protobuf/any.proto";
+
+enum Strategy {
+  STRATEGY_UNSPECIFIED = 0;
+  STRATEGY_ADMIN = 1;
+  STRATEGY_EDITOR = 2;
+  STRATEGY_VIEWER = 3;
+}
+
+message ModelLinear {
+  double slope = 1;
+}
+
+message ModelNonLinear {
+  int32 polynomial_degree = 1;
+}
+
+message TournamentSelectionParams {
+  int32 tournament_size = 1;
+}
+
+message RandomInitializationParams {
+  int32 population_size = 1;
+  double min_value = 2;
+  double max_value = 3;
+}
+
+message OptimizationConfig {
+  int32 iterations = 1;
+  double epsilon = 2;
+  Strategy strategy = 3;
+  
+  // Pluggable GA Parameters
+  google.protobuf.Any initialization_params = 4;
+  google.protobuf.Any termination_params = 5;
+  google.protobuf.Any recombination_params = 6;
+  google.protobuf.Any selection_params = 7;
+  google.protobuf.Any mutation_params = 8;
+
+  oneof model {
+    ModelLinear model_linear = 9;
+    ModelNonLinear model_non_linear = 10;
+  }
+}

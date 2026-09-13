@@ -1,0 +1,447 @@
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamertheme}[2025/12/12 Custom Beamer Theme]
+
+\RequirePackage{tikz}
+\usetikzlibrary{shapes.geometric}
+\usetikzlibrary{shapes.misc}
+\RequirePackage{fontawesome5}
+\RequirePackage{microtype}
+\RequirePackage{etoolbox}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{sourcesanspro} 
+
+\RequirePackage{tcolorbox}
+
+\RequirePackage{xcolor}
+\tcbuselibrary{skins, breakable}
+
+\mode<presentation>
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Colors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\definecolor{cardinalred}{RGB}{140,21,21} 
+\definecolor{coolgrey}{RGB}{77,79,83} 
+\definecolor{lightgrey}{HTML}{f8f8f8} 
+
+\colorlet{primarycolor}{white}
+\colorlet{invertedprimarycolor}{black}
+\colorlet{secondarycolor}{lightgrey}
+\colorlet{accentcolor}{cardinalred}
+\colorlet{secondaryaccentcolor}{white}
+
+\colorlet{emailcolor}{secondarycolor}
+\colorlet{headercolor}{coolgrey}
+
+\definecolor{alertcolor}{RGB}{200,50,50}    % Reddish for alerts
+\definecolor{examplecolor}{RGB}{50,150,50}  % Greenish for examples
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Beamer General Settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Itemize Bullet Colors
+\setbeamercolor{itemize item}{fg=black}
+\setbeamercolor{itemize subitem}{fg=black}
+\setbeamercolor{itemize subsubitem}{fg=black}
+\setbeamercolor{section head}{fg=accentcolor}
+
+% Itemize Bullet Shapes
+\setbeamertemplate{itemize item}[circle]
+\setbeamertemplate{itemize subitem}{{\textendash}}
+\setbeamertemplate{itemize subsubitem}[triangle]
+
+% Font Settings
+\setbeamercolor{title}{fg=invertedprimarycolor}
+
+\setbeamerfont{subtitle}{series=\scshape}
+\setbeamercolor{subtitle}{fg=invertedprimarycolor}
+
+\setbeamerfont{author}{family=\sourcesanspro}
+\setbeamercolor{author}{fg=invertedprimarycolor}
+
+\setbeamerfont{institute}{family=\sourcesanspro}
+\setbeamercolor{institute}{fg=accentcolor}
+
+\setbeamerfont{email}{family=\sourcesanspro}
+\setbeamercolor{email}{fg=emailcolor}
+
+\setbeamerfont{date}{family=\sourcesanspro}
+\setbeamercolor{date}{fg=secondaryaccentcolor}
+
+\setbeamerfont{frametitle}{series=\scshape}
+\setbeamercolor{frametitle}{fg=black}
+
+% Email handling
+% Initialize @email to avoid errors if user doesn't define it
+\def\@email{} 
+\newcommand{\email}[1]{\def\@email{\texttt{\MakeLowercase{\textls[10]{#1}}}}}
+
+% Navigation Symbols (Adding page numbers)
+\setbeamertemplate{navigation symbols}{}
+\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}
+
+\setbeamertemplate{caption}[numbered]
+\RequirePackage{caption}
+\captionsetup{
+    labelsep=colon,      % Adds the colon ":" after the number
+    labelfont={bf, small}, % Make "Figura 1" Bold and Small
+    textfont={small}     % Make the caption text Small
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Title Page
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\newtoggle{showInstituteLogo}
+\togglefalse{showInstituteLogo} 
+
+\newcommand{\instituteLogo}{} 
+\newcommand{\instituteThumb}{} 
+
+\newcommand{\useInstituteLogo}[1]{%
+  \toggletrue{showInstituteLogo}
+  \renewcommand{\instituteLogo}{#1}%
+}
+
+\newcommand{\useInstituteThumb}[1]{%
+  \renewcommand{\instituteThumb}{#1}%
+}
+
+\setbeamertemplate{title page}[default][left] 
+
+% Custom Title Page Template
+\defbeamertemplate*{title page}{customized}[1][]
+{
+  \begin{minipage}[c]{0.1\textwidth}
+    \text{ }
+  \end{minipage}
+  \begin{minipage}[c]{0.8\textwidth}
+    \setbeamercolor{background canvas}{bg=primarycolor}
+
+    \begin{tikzpicture}[remember picture, overlay]
+        \coordinate (CircleCenter) at ([xshift=0cm, yshift=0cm] current page.center);
+        
+        \fill[fill=primarycolor] (CircleCenter) circle (10cm);
+
+        % [fill=colorname!alpha]
+        \fill[fill=secondarycolor] (CircleCenter) circle (8cm);
+        
+        \fill[fill=primarycolor] (CircleCenter) circle (6cm);
+    \end{tikzpicture}
+    
+    \vspace{-1.2cm}
+    \centering{
+      \iftoggle{showInstituteLogo}{
+        % If toggle is TRUE, show the image
+        % \insertinstitute now holds the image path provided by the user
+        \begin{figure}
+            \instituteLogo
+        \end{figure}
+      }{
+        % If toggle is FALSE, show the text (Standard behavior)
+        \usebeamerfont{institute}{\usebeamercolor[fg]{institute}\textls[100]{\textsc{\insertinstitute}}}\par
+      }
+      \usebeamerfont{title}\usebeamercolor[fg]{title}\textls[100]{\MakeUppercase{\textbf{\inserttitle}}}\par
+      \smallskip
+      \usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\textls[100]{\textsc{\insertsubtitle}}\par\par
+    }
+    \vspace{8mm}
+    \usebeamerfont{author}\usebeamercolor[fg]{author}\textls[100]{\textsc{\insertauthor}}\par
+    \smallskip
+    {\usebeamercolor[fg]{email}\@email}\par
+    \vfill
+    \begin{figure}
+      \centering
+      \begin{tikzpicture}
+        \node[fill=accentcolor, rounded rectangle, minimum width=1.1cm, minimum height=0.6cm] at (0, 0) {\footnotesize{\textbf{\usebeamercolor[fg]{date}{\usebeamerfont{date}{\insertdate}}}}};
+      \end{tikzpicture}
+    \end{figure}
+  \end{minipage}
+  \vspace{-1cm}
+}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Table of contents
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\def\@toctittle{Table of Contents}
+\newcommand{\toctittle}[1]{
+  \def\@toctittle{#1}
+}
+\newcommand{\inserttoctittle}{
+    \@toctittle
+}
+
+% style of section presented in the table of contents
+\setbeamertemplate{section in toc}{%
+  \tikz{\draw[fill=invertedprimarycolor] (0,0) circle (3pt);}
+  \hspace{1mm}{\usebeamerfont{subtitle}\usebeamercolor[fg]{frametitle}{\textsc{\textbf{\inserttocsectionnumber ) \inserttocsection}}}}\par%
+}
+\setbeamertemplate{subsection in toc}{%
+  \hspace{3mm}$\blacktriangleright$
+  \hspace{1mm}{\usebeamerfont{subtitle}\usebeamercolor[fg]{frametitle}{\textsc{\textbf{\inserttocsectionnumber.\inserttocsubsectionnumber ) \inserttocsubsection}}}}\par%
+}
+
+
+% avoid numbering of frames that are breaked into multiply slides
+\setbeamertemplate{frametitle continuation}{}
+
+\newcommand{\InsertTocFrame}{
+  {
+    \setbeamercolor{background canvas}{bg=primarycolor}
+    \setbeamercolor{title}{fg=invertedprimarycolor}
+    \setbeamercolor{normal text}{fg=invertedprimarycolor}
+    \setbeamercolor{frametitle}{fg=invertedprimarycolor}
+
+    \begin{frame}
+      \begin{tikzpicture}[remember picture, overlay]
+        \coordinate (CircleCenter) at ([xshift=-7.5cm, yshift=0cm] current page.center);
+
+        \fill[fill=secondarycolor] (CircleCenter) circle (8cm);
+
+        \fill[fill=primarycolor] (CircleCenter) circle (6cm);
+      \end{tikzpicture}
+
+      \begin{minipage}[c]{0.6\textwidth}
+        \begin{minipage}[c]{0.45\textwidth}
+          \centering
+          \fontsize{35}{35}{\textcolor{accentcolor}{\faIcon{clipboard-list}}}
+
+          \vspace{5mm}
+          \usebeamercolor[fg]{title}{\usebeamerfont{title}\textls[100]{\MakeUppercase{\textbf{\inserttoctittle}}}\par}
+          % \usebeamerfont{title}\textls[100]{\textbf{\inserttoctittle}}\par
+        \end{minipage}
+      \end{minipage}
+      \begin{minipage}[c]{0.38\textwidth}
+        \tableofcontents
+      \end{minipage}
+    \end{frame}
+  }
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Frame Title 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\setbeamertemplate{frametitle}{   
+    \vspace*{-2mm}
+    \begin{center}
+        \footnotesize
+        \textcolor{headercolor}{\inserttitle}
+    \end{center}
+    \vspace*{-2mm}
+    \begin{minipage}[t]{0.7\textwidth}
+      % Logic to handle section vs frame titles
+      \vspace{-7mm}
+      \hspace{-5mm}\small{\textcolor{accentcolor}{\faIcon{bars}}}
+
+      \vspace{-1mm}
+      \hspace{2mm}\textbf{\large{\insertframetitle}}
+
+      \ifdefempty{\insertsectionhead}{%
+        \text{ }
+      }{%
+        \hspace{2mm}\textcolor{accentcolor}{\normalsize{\insertsectionhead}}\ifdefempty{\insertsubsectionhead}{
+          \text{ }
+        }{%
+          \textcolor{accentcolor}{\normalsize{: \insertsubsectionhead}}
+        }
+      } 
+      
+    \end{minipage}
+    \begin{minipage}[t]{0.28\textwidth}
+      \vspace{-1.25cm}
+      \begin{figure}
+        \begin{flushright}
+          \hspace*{3.5cm}\includegraphics[height=1.2cm]{\instituteThumb}
+        \end{flushright}
+      \end{figure}
+    \end{minipage}
+
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Section Divider Slides
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\AtBeginSection[]{
+    {
+    \setbeamercolor{background canvas}{bg=primarycolor}
+    \setbeamercolor{title}{fg=invertedprimarycolor}
+    \usebeamercolor[fg]{normal text}
+
+    \begin{frame}
+      \begin{tikzpicture}[remember picture, overlay]
+        \coordinate (CircleCenter) at ([xshift=0cm, yshift=0cm] current page.center);
+        
+        % [fill=colorname!alpha]
+        \fill[fill=secondarycolor] (CircleCenter) circle (8cm);
+        
+        \fill[fill=primarycolor] (CircleCenter) circle (6cm);
+      \end{tikzpicture}
+      \vfill
+      \centering
+      \begin{beamercolorbox}[sep=8pt,center]{title}
+        {\usebeamerfont{title}\usebeamercolor[fg]{title}{\textsc{\insertsectionnumber\protect~\text{.}\insertsectionhead}}}\par%
+      \end{beamercolorbox}
+      \vfill
+    \end{frame}
+  }
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Block Colors
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\AtBeginDocument{
+  % Outline Block Colors
+  \@ifundefinedcolor{wcblockframe}{\colorlet{wcblockframe}{accentcolor}}{}
+  \@ifundefinedcolor{wcblocktitle}{\colorlet{wcblocktitle}{accentcolor}}{}
+
+  \@ifundefinedcolor{wcalertframe}{\colorlet{wcalertframe}{alertcolor}}{}
+  \@ifundefinedcolor{wcalerttitle}{\colorlet{wcalerttitle}{alertcolor}}{}
+
+  \@ifundefinedcolor{wcexampleframe}{\colorlet{wcexampleframe}{examplecolor}}{}
+  \@ifundefinedcolor{wcexampletitle}{\colorlet{wcexampletitle}{examplecolor}}{}
+
+  % Box Block Colors
+  \@ifundefinedcolor{boxblockback}{\colorlet{boxblockback}{secondarycolor!50!primarycolor}}{}
+  \@ifundefinedcolor{boxblockframe}{\colorlet{boxblockframe}{headercolor}}{}
+  \@ifundefinedcolor{boxblocktext}{\colorlet{boxblocktext}{invertedprimarycolor}}{}
+  
+  \@ifundefinedcolor{boxblockbacktitle}{\colorlet{boxblockbacktitle}{accentcolor}}{}
+  \@ifundefinedcolor{boxblocktitle}{\colorlet{boxblocktitle}{primarycolor}}{}
+
+  \@ifundefinedcolor{boxalertback}{\colorlet{boxalertback}{secondarycolor}}{}
+  \@ifundefinedcolor{boxalertframe}{\colorlet{boxalertframe}{alertcolor}}{}
+  \@ifundefinedcolor{boxalerttext}{\colorlet{boxalerttext}{invertedprimarycolor}}{}
+  
+  % Also changed to 20% alertcolor and 80% primarycolor for consistency
+  \@ifundefinedcolor{boxalertbacktitle}{\colorlet{boxalertbacktitle}{alertcolor!20!primarycolor}}{}
+  \@ifundefinedcolor{boxalerttitle}{\colorlet{boxalerttitle}{primarycolor}}{}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Standard Blocks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Material-style outline block with a floating label-like title.
+\newtcolorbox{wildcatblock}[2][colframe=wcblockframe,coltitle=wcblocktitle]{
+  enhanced,
+  colback=primarycolor,
+  boxrule=0.7pt,
+  arc=2.5pt,
+  left=8pt,
+  right=8pt,
+  top=10pt,
+  bottom=8pt,
+  before skip=8pt,
+  after skip=8pt,
+  title={#2},
+  fonttitle=\footnotesize\bfseries,
+  attach boxed title to top left={xshift=10pt,yshift*=-\tcboxedtitleheight/2},
+  boxed title style={
+    frame hidden,
+    boxrule=0pt,
+    boxsep=0pt,
+    sharp corners,
+    top=0pt,
+    bottom=0pt,
+    left=3pt,
+    right=3pt,
+    colback=primarycolor
+  },
+  #1
+}
+
+\RenewDocumentEnvironment{block}{d<> m}
+  {%
+    \IfNoValueF{#1}{\begin{actionenv}<#1>}%
+    \begin{wildcatblock}[colframe=wcblockframe,coltitle=wcblocktitle]{#2}%
+  }
+  {%
+    \end{wildcatblock}%
+    \IfNoValueF{#1}{\end{actionenv}}%
+  }
+
+\RenewDocumentEnvironment{alertblock}{d<> m}
+  {%
+    \IfNoValueF{#1}{\begin{actionenv}<#1>}%
+    \begin{wildcatblock}[colframe=wcalertframe,coltitle=wcalerttitle]{#2}%
+  }
+  {%
+    \end{wildcatblock}%
+    \IfNoValueF{#1}{\end{actionenv}}%
+  }
+
+\RenewDocumentEnvironment{exampleblock}{d<> m}
+  {%
+    \IfNoValueF{#1}{\begin{actionenv}<#1>}%
+    \begin{wildcatblock}[colframe=wcexampleframe,coltitle=wcexampletitle]{#2}%
+  }
+  {%
+    \end{wildcatblock}%
+    \IfNoValueF{#1}{\end{actionenv}}%
+  }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Box Blocks
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% Solid card style with distinct title background
+\newtcolorbox{boxblock}[2][]{%
+  enhanced,
+  colback=boxblockback,       
+  colframe=boxblockframe,         
+  coltext=boxblocktext, 
+  colbacktitle=boxblockbacktitle,     
+  coltitle=boxblocktitle,        
+  fonttitle=\bfseries,
+  title={#2},
+  boxrule=.55pt,
+  arc=1.6mm,
+  outer arc=1.6mm,
+  left=2.2mm,
+  right=2.2mm,
+  top=1.8mm,
+  bottom=1.8mm,
+  before skip=.45em,
+  after skip=.45em,
+  #1
+}
+
+\newtcolorbox{boxalertblock}[2][]{%
+  enhanced,
+  colback=boxalertback,       
+  colframe=boxalertframe,         
+  coltext=boxalerttext, 
+  colbacktitle=boxalertbacktitle,     
+  coltitle=boxalerttitle,        
+  fonttitle=\bfseries,
+  title={#2},
+  boxrule=.55pt,
+  arc=1.6mm,
+  outer arc=1.6mm,
+  left=2.2mm,
+  right=2.2mm,
+  top=1.8mm,
+  bottom=1.8mm,
+  before skip=.45em,
+  after skip=.45em,
+  #1
+}
+
+\mode<all>
+
+

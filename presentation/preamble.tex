@@ -1,0 +1,130 @@
+\usepackage{fontspec} %REQUIRES "xelatex" or "lualatex"
+\usepackage{sourcesanspro}
+% \usepackage[T1]{fontenc}
+\usefonttheme{serif}
+\usefonttheme{professionalfonts}
+\usepackage[tracking=true]{microtype}
+
+\usepackage[brazilian]{babel}
+
+\usepackage{multirow}
+\usepackage{array}
+%color
+\usepackage{xcolor}
+%scientific
+\usepackage{siunitx}
+\sisetup{
+    output-decimal-marker = {,},   % Use comma for decimals (3,14)
+    group-separator = {.},         % Use dot for thousands (1.000)
+    group-minimum-digits = 4,      % Forces grouping for 1000 (standard is usually 5 digits)
+    list-final-separator = { e },  % "1, 2 e 3" instead of "and"
+    list-pair-separator = { e },   % "1 e 2"
+    range-phrase = { a },          % "10 a 20" instead of "to"
+    exponent-product = \cdot,      % Uses dot (3 . 10^3) instead of x
+    inter-unit-product = \ensuremath{{}\cdot{}} % Dot between units (N.m)
+}
+
+%math
+
+%code
+\usepackage{algorithmicx}
+\usepackage{algorithm}
+\usepackage[noend]{algpseudocode}
+%graphic
+\usepackage{tikz}
+\usepackage[american, cute inductors]{circuitikz} % Circuitos
+%macros
+\usepackage{etoolbox}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Reference (biblatex) settings
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[style=verbose,backend=biber]{biblatex}
+\addbibresource{bibliography.bib}
+\setbeamerfont{footnote}{size=\tiny}
+\setbeamertemplate{bibliography item}{}% Remove reference icon.
+\renewcommand*{\bibfont}{\footnotesize}
+
+\usetheme{articlestyle}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Custom commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\trig}{\faAngleRight\hspace{1mm}}
+\newcommand{\mycvitem}[4]{
+    \begin{center}
+        \begin{tabular}{p{0.15\textwidth} p{0.001\textwidth} !{\vrule width 2pt} p{0.001\textwidth} p{0.68\textwidth} } 
+          \centering #1& & & \footnotesize{\textbf{#2}} \fontsize{8}{8}{\textcolor{invertedprimarycolor}{\textit{(#3)}}} \newline\fontsize{8}{8}{\trig #4} \normalsize\\ 
+        \end{tabular}
+    \end{center}
+}
+
+% --- Contadores para Requisitos ---
+\newcounter{reqCORE}
+\newcounter{reqDIG}
+\newcounter{reqADP}
+\newcounter{reqREP}
+\newcounter{reqAPP}
+\newcounter{reqMEC}
+\newcounter{reqFAX}
+\newcounter{reqREM}
+
+% Comando interno para formatar o número com 3 dígitos (001, 012, etc.)
+\newcommand{\formatreq}[1]{%
+    \stepcounter{req#1}%
+    REQ-#1-\ifnum\value{req#1}<10 00\else\ifnum\value{req#1}<100 0\fi\fi\arabic{req#1}%
+}
+
+% Comando customizado para gerar o bloco de requisito
+% Uso: \makereq{INFIXO}{Título}{Subsistemas}{Tipo}{Prioridade}{Fase}{Descrição}{Critério}
+\newcommand{\makereq}[8]{%
+    \begin{block}{\textbf{\formatreq{#1}:} #2}
+    \small
+    \begin{tabular}{p{0.25\textwidth} p{0.7\textwidth}}
+      \textbf{Subsistemas:} & #3 \\
+      \textbf{Tipo:} & #4 \\
+      \textbf{Prioridade:} & #5 \\
+      \textbf{Fase:} & #6 \\
+      \textbf{Descrição:} & #7 \\
+      \textbf{Critério de Aceite:} & #8 \\
+    \end{tabular}
+    \end{block}
+}
+
+\usepackage{pgfgantt}
+
+\ganttset{
+    canvas/.style={draw=none},
+    vgrid={*1{draw=black!10, solid, line width=0.5pt}},
+    hgrid={*1{draw=black!5, solid, line width=0.5pt}},  
+    x unit=1.2cm, 
+    y unit title=0.25cm, 
+    y unit chart=0.25cm, 
+    % Estilo do Cabeçalho (Meses)
+    title/.style={draw=none, fill=white!0},
+    title label node/.style={
+        anchor=center, 
+        font=\sffamily\bfseries\tiny,
+        text=black!80 
+    },
+    include title in canvas=false,
+    % Estilo dos Grupos (Categorias - Primeira Linha)
+    group/.style={draw=none, fill=coolgrey, inner sep=0pt, rounded corners=0.5pt},
+    group label font=\bfseries\tiny\color{black!80},
+    group label node/.append style={align=right, xshift=-0.2cm},
+    group top shift=0.2,
+    group height=0.6,
+    % Estilo das Barras (Tarefas)
+    bar/.style={draw=none, fill=accentcolor, inner sep=0pt},
+    bar label font=\tiny\color{black!80},
+    bar label node/.append style={align=right, xshift=-0.2cm},
+    bar top shift=0.25,
+    bar height=0.5,
+    % Estilo dos Milestones (Entregas)
+    milestone/.style={draw=none, fill=sonoyellow, shape=diamond, inner sep=0pt},
+    milestone label font=\bfseries\tiny\color{black!80},
+    milestone label node/.append style={align=right, xshift=-0.2cm},
+    milestone top shift=0.25,
+    milestone height=0.5
+}
