@@ -43,6 +43,14 @@ class GeneticAlgorithm:
             population = self.selection_fn(population, recombination, mutation)
 
 
+class TerminateAtMaxIter:
+    def __init__(self, max_iter):
+        self.max_iter = max_iter
+
+    def terminate_at_max_iter_fn(self, iteration):
+        return self.max_iter > iteration
+
+
 if __name__ == "__main__":
     print("Hello from heuristic_trajectory_planning.py!")
     load_config(SCRIPT_DIR / "config" / "ex_config.json")
