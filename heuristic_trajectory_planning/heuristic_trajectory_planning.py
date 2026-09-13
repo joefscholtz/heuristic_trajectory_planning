@@ -26,18 +26,22 @@ class GeneticAlgorithm:
         recombination_fn,
         mutation_fn,
         selection_fn,
+        analysis_fn=None,
     ):
         self.initialization_fn = initialization_fn
         self.termination_fn = termination_fn
         self.recombination_fn = recombination_fn
         self.mutation_fn = mutation_fn
         self.selection_fn = selection_fn
+        self.analysis_fn = analysis_fn
 
     def run(self):
         generation = 0
         population = self.initialization_fn()
 
         while not self.termination_fn(generation, population):
+            if self.analysis_fn is not None:
+                self.analysis_fn(population)
             recombination = self.recombination_fn(population)
             mutation = self.mutation_fn(population)
             population = self.selection_fn(population, recombination, mutation)
