@@ -11,7 +11,7 @@ sys.path.append(str(core_build_schema))
 plugin_schema_build = project_root / "build" / "examples" / "example_config" / "schema"
 sys.path.append(str(plugin_schema_build))
 
-from heuristic_trajectory_planning import heuristic_trajectory_planning as htp
+import heuristic_trajectory_planning as htp
 import config_pb2
 import super_mutation_pb2
 from google.protobuf import json_format
@@ -50,11 +50,6 @@ def load_and_run():
         recombination_fn=recomb_s,
         selection_fn=select_s,
         mutation_fn=mut_s,
-    )
-
-    # Overriding termination just so the console isn't spammed with 1000 generations
-    ga.termination_fn = htp.TerminateAtMaxIter(
-        config_pb2.OptimizationConfig(iterations=3)
     )
 
     final_pop = ga.run()

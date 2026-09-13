@@ -18,6 +18,16 @@ message ModelNonLinear {
   int32 polynomial_degree = 1;
 }
 
+message TournamentSelectionParams {
+  int32 tournament_size = 1;
+}
+
+message RandomInitializationParams {
+  int32 population_size = 1;
+  double min_value = 2;
+  double max_value = 3;
+}
+
 message OptimizationConfig {
   int32 iterations = 1;
   double epsilon = 2;
