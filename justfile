@@ -24,7 +24,7 @@ build:
   ln -sf build/compile_commands.json .
 
 run:
-  @echo "Not implemented yet."
+  uv run examples/example_config/python/main.py
 
 clean:
   @echo "Not implemented yet."
