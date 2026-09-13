@@ -7,6 +7,7 @@ sys.path.append(str(BUILD_SCHEMA_DIR))
 
 from google.protobuf import json_format
 import config_pb2
+from map_handler import MapHandler
 
 
 def load_config(path):
@@ -20,3 +21,7 @@ def load_config(path):
 if __name__ == "__main__":
     print("Hello from heuristic_trajectory_planning.py!")
     load_config(SCRIPT_DIR / "config" / "ex_config.json")
+    map = MapHandler.load_map_from_yaml(SCRIPT_DIR / "config/map/turtlebot3_map.yaml")
+    map.plot()
+    downsampled_grid = map.discretize(factor=4)
+    downsampled_grid.plot()
