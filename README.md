@@ -21,13 +21,38 @@ DESCRIPTION HERE!!
 └── justfile                              # Recipes
 ```
 
-## Installation
+## Requirements:
 
-Requirements:
+### Using Docker
+
+- Docker
+- Docker Compose
+
+### Without Docker
 
 - git
 - [uv](https://docs.astral.sh/uv/) (Required, Python manager)
 - [just](https://github.com/casey/just) (Optional, Recipes)
+
+## Initialization
+
+### Using Docker
+
+Build image:
+
+```bash
+docker compose -f docker-compose.yml build;
+```
+
+Enter image:
+
+```bash
+docker compose -f docker-compose.yml run -it --rm --name heuristic_trajectory_planning heuristic_trajectory_planning-app bash
+```
+
+Once in the docker container you can proceed as follows
+
+### Without Docker or after entering the image
 
 using just:
 
@@ -70,7 +95,8 @@ just run
 without just
 
 ```bash
-# Not implemented yet
+uv run examples/example_config/python/main.py
+uv run examples/example_map/python/main.py
 ```
 
 ## How to use the library

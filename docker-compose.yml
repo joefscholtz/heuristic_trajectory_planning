@@ -1,0 +1,31 @@
+services:
+  heuristic_trajectory_planning-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: heuristic_trajectory_planning:latest
+    volumes:
+      - .:/project:z
+      - /dev:/dev
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw # Required for Linux X11 socket
+      - ~/.Xauthority:/root/.Xauthority:ro # Passes X11 security cookie
+      - uv-cache-vol:/root/.cache/uv
+      - venv-docker-vol:/project/.venv_docker # Persistent named volume
+    working_dir: /project
+    environment:
+      - IS_DOCKER=true
+      - UV_LINK_MODE=copy # Fixes the hardlink warning across filesystems
+      - UV_PROJECT_ENVIRONMENT=/project/.venv_docker
+      - UV_CACHE_DIR=/root/.cache/uv
+      # - UV_CACHE_DIR=/project/.uv_cache
+      # - DISPLAY=${DISPLAY:-host.docker.internal:0} # Cross-platform display routing
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1 # Prevents graphical tearing/crashing in Docker
+      - MPLBACKEND=TkAgg # Forces Matplotlib to use a windowed GUI backend
+    device_cgroup_rules:
+      - "c 188:* rwm" # USB serial devices /dev/ttyUSB* (major=188)
+    user: "root"
+
+volumes:
+  uv-cache-vol:
+  venv-docker-vol:

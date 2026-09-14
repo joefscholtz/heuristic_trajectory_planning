@@ -1,5 +1,6 @@
 alias i:= init
 alias b:= build
+alias bi:= build-image
 alias c:= clean
 # alias e:= enter
 alias r:=run
@@ -55,17 +56,17 @@ reset:
 
 # Using Docker
 
-# down:
-#   docker stop {{container_name}} || true
-#   docker rm {{container_name}} || true
-#   docker compose -f docker-compose.yml down || true
-#
-# build-image args="--progress='auto'": down
-#   @echo "Use 'just build-image --progress=\"plain\"' for more information. Options: auto (default), tty, plain, json, quiet"
-#   docker compose {{args}} -f docker-compose.yml build;
-#
-# enter: down && down
-#   docker compose -f docker-compose.yml run -it --rm --name {{container_name}} {{docker-compose-service}} bash
-#
-# dev target: down && down
-#     docker-compose run --rm {{docker-compose-service}} just {{target}}
+down:
+  docker stop {{container_name}} || true
+  docker rm {{container_name}} || true
+  docker compose -f docker-compose.yml down || true
+
+build-image args="--progress='auto'": down
+  @echo "Use 'just build-image --progress=\"plain\"' for more information. Options: auto (default), tty, plain, json, quiet"
+  docker compose {{args}} -f docker-compose.yml build;
+
+enter: down && down
+  docker compose -f docker-compose.yml run -it --rm --name {{container_name}} {{docker-compose-service}} bash
+
+dev target: down && down
+    docker-compose run --rm {{docker-compose-service}} just {{target}}
