@@ -27,3 +27,4 @@ from . import termination
 from . import recombination
 from . import mutation
 from . import selection
+from . import map_handler

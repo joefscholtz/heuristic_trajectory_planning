@@ -6,5 +6,9 @@
     "@type": "type.googleapis.com/htp.plugins.SuperMutationParams",
     "adaptiveRate": 0.05,
     "chromosomalCrossover": true
+  },
+  "selectionParams": {
+    "@type": "type.googleapis.com/htp.config.CustomSelectionParams",
+    "tournament_size": 10
   }
 }
