@@ -4,7 +4,7 @@ from .core import SelectionStrategy, register_selection
 
 @register_selection("type.googleapis.com/htp.config.TournamentSelectionParams")
 class TournamentSelection(SelectionStrategy):
-    def __init__(self, payload):
+    def __init__(self, payload, global_config):
         params = config_pb2.TournamentSelectionParams()
         payload.Unpack(params)
         self.tournament_size = params.tournament_size
@@ -17,7 +17,7 @@ class TournamentSelection(SelectionStrategy):
 
 @register_selection("type.googleapis.com/htp.config.CustomSelectionParams")
 class CustomSelection(SelectionStrategy):
-    def __init__(self, payload):
+    def __init__(self, payload, global_config):
         params = config_pb2.TournamentSelectionParams()
         payload.Unpack(params)
         self.tournament_size = params.tournament_size

@@ -3,7 +3,7 @@ from .core import InitializationStrategy, register_initialization
 
 # @register_initialization("type.googleapis.com/htp.config.RandomTrajsSE2Params")
 # class RandomTrajsSE2(InitializationStrategy):
-#     def __init__(self, payload):
+#     def __init__(self, payload, global_config):
 #         params = config_pb2.TournamentSelectionParams()
 #         payload.Unpack(params)
 #         self.tournament_size = params.tournament_size

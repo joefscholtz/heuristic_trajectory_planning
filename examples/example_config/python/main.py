@@ -19,7 +19,7 @@ from google.protobuf import json_format
 
 @htp.register_mutation("type.googleapis.com/htp.plugins.SuperMutationParams")
 class SuperMutation(htp.MutationStrategy):
-    def __init__(self, payload):
+    def __init__(self, payload, global_config):
         params = super_mutation_pb2.SuperMutationParams()
         payload.Unpack(params)
 

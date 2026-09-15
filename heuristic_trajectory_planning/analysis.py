@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 
 @register_analysis("type.googleapis.com/htp.config.PrintTrajOnMapParams")
 class PrintTrajOnMap(AnalysisClass):
-    def __init__(self, payload):
+    def __init__(self, payload, global_config):
         params = config_pb2.PrintTrajOnMapParams()
         payload.Unpack(params)
         self.map_yaml_path = params.map_yaml_path

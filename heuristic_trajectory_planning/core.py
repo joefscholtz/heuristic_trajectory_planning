@@ -33,7 +33,7 @@ class BaseIndividual(ABC):
 # ==========================================
 class InitializationStrategy(ABC):
     @abstractmethod
-    def __init__(self, payload: Any):
+    def __init__(self, payload: Any, global_config: Any):
         pass
 
     @abstractmethod
@@ -43,7 +43,7 @@ class InitializationStrategy(ABC):
 
 class TerminationStrategy(ABC):
     @abstractmethod
-    def __init__(self, payload: Any):
+    def __init__(self, payload: Any, global_config: Any):
         pass
 
     @abstractmethod
@@ -53,7 +53,7 @@ class TerminationStrategy(ABC):
 
 class RecombinationStrategy(ABC):
     @abstractmethod
-    def __init__(self, payload: Any):
+    def __init__(self, payload: Any, global_config: Any):
         pass
 
     @abstractmethod
@@ -63,7 +63,7 @@ class RecombinationStrategy(ABC):
 
 class MutationStrategy(ABC):
     @abstractmethod
-    def __init__(self, payload: Any):
+    def __init__(self, payload: Any, global_config: Any):
         pass
 
     @abstractmethod
@@ -73,7 +73,7 @@ class MutationStrategy(ABC):
 
 class SelectionStrategy(ABC):
     @abstractmethod
-    def __init__(self, payload: Any):
+    def __init__(self, payload: Any, global_config: Any):
         pass
 
     @abstractmethod
@@ -88,7 +88,7 @@ class SelectionStrategy(ABC):
 
 class AnalysisClass(ABC):
     @abstractmethod
-    def __init__(self, payload: Any):
+    def __init__(self, payload: Any, global_config: Any):
         pass
 
     @abstractmethod
@@ -171,7 +171,7 @@ class DummyIndividual(BaseIndividual):
 
 
 class DummyInitialization(InitializationStrategy):
-    def __init__(self, config=None):
+    def __init__(self, payload=None, global_config=None):
         pass
 
     def __call__(self) -> list[BaseIndividual]:
@@ -184,15 +184,15 @@ class DummyInitialization(InitializationStrategy):
 
 
 class TerminateAtMaxIter(TerminationStrategy):
-    def __init__(self, config):
-        self.max_iter = config.iterations if config else 1000
+    def __init__(self, payload=None, global_config=None):
+        self.max_iter = global_config.iterations if global_config else 1000
 
     def __call__(self, generation_n: int, population: list[BaseIndividual]) -> bool:
         return generation_n >= self.max_iter
 
 
 class DummyRecombination(RecombinationStrategy):
-    def __init__(self, config=None):
+    def __init__(self, payload=None, global_config=None):
         pass
 
     def __call__(self, population: list[BaseIndividual]) -> list[BaseIndividual]:
@@ -201,7 +201,7 @@ class DummyRecombination(RecombinationStrategy):
 
 
 class DummyMutation(MutationStrategy):
-    def __init__(self, config=None):
+    def __init__(self, payload=None, global_config=None):
         pass
 
     def __call__(self, population: list[BaseIndividual]) -> list[BaseIndividual]:
@@ -210,7 +210,7 @@ class DummyMutation(MutationStrategy):
 
 
 class DummySelection(SelectionStrategy):
-    def __init__(self, config=None):
+    def __init__(self, payload=None, global_config=None):
         pass
 
     def __call__(
@@ -224,7 +224,7 @@ class DummySelection(SelectionStrategy):
 
 
 class PrintGen(AnalysisClass):
-    def __init__(self, config=None):
+    def __init__(self, payload=None, global_config=None):
         pass
 
     def __call__(self, generation_n: int, population: list[BaseIndividual]):
@@ -240,10 +240,10 @@ def build_and_get_strategies(config):
                 raise KeyError(
                     f"No strategy registered for '{payload.type_url}' in {field_name}"
                 )
-            return registry[payload.type_url](payload)
+            return registry[payload.type_url](payload, global_config=config)
 
         # Fallback to default class, passing the full config for context
-        return default_class(config)
+        return default_class(payload=None, global_config=config)
 
     init_s = _instantiate("initialization_params", INIT_REGISTRY, DummyInitialization)
     term_s = _instantiate("termination_params", TERM_REGISTRY, TerminateAtMaxIter)
