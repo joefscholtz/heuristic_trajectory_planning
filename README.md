@@ -107,6 +107,7 @@ without just
 ```bash
 uv run examples/example_config/python/main.py
 uv run examples/example_map/python/main.py
+uv run examples/2D/differential_wheeled_robot/main.py
 ```
 
 ## How to use the library

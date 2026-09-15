@@ -96,7 +96,7 @@ class OccupancyGrid:
 
         return OccupancyGrid(info=new_info, data=downsampled_data)
 
-    def plot(self):
+    def plot(self, ax=None, show: bool = True, block: bool = True):
         """Visualizes the 2D map using Matplotlib."""
         if plt is None:
             raise ImportError(
@@ -114,9 +114,6 @@ class OccupancyGrid:
         scale_mask = (self.data > OCC_GRID_FREE) & (self.data < OCC_GRID_OCCUPIED)
         vis_img[scale_mask] = 1.0 - (self.data[scale_mask] / 100.0)
 
-        plt.figure(figsize=(10, 10))
-
-        # origin='lower' because row 0 in our flipped matrix represents the bottom-left coordinate
         extent = [
             self.info.origin.x,
             self.info.origin.x + self.info.width * self.info.resolution,
@@ -124,14 +121,30 @@ class OccupancyGrid:
             self.info.origin.y + self.info.height * self.info.resolution,
         ]
 
-        plt.imshow(vis_img, cmap="gray", origin="lower", extent=extent)
+        # -----------------------------------------------------
+        # Window Management Logic
+        # -----------------------------------------------------
+        if ax is None:
+            fig, ax = plt.subplots(figsize=(10, 10))
+        else:
+            ax.clear()  # Clear old paths/data if reusing the same window
 
-        plt.title(
+        ax.imshow(vis_img, cmap="gray", origin="lower", extent=extent)
+        ax.set_title(
             f"Occupancy Grid: {self.info.width}x{self.info.height} | Res: {self.info.resolution:.3f} m/px"
         )
-        plt.xlabel("X (meters)")
-        plt.ylabel("Y (meters)")
-        plt.show()
+        ax.set_xlabel("X (meters)")
+        ax.set_ylabel("Y (meters)")
+
+        if show:
+            if not block:
+                plt.ion()
+                plt.show(block=False)
+                plt.pause(0.01)  # Forces the GUI event loop to update
+            else:
+                plt.ioff()
+                plt.show()
+        return ax
 
 
 class MapHandler:

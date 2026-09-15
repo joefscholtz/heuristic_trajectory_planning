@@ -14,12 +14,14 @@ from .core import (
     register_recombination,
     register_mutation,
     register_selection,
+    register_analysis,
     # Abstract Base Classes
     InitializationStrategy,
     TerminationStrategy,
     RecombinationStrategy,
     MutationStrategy,
     SelectionStrategy,
+    AnalysisClass,
 )
 
 from . import initialization
@@ -27,4 +29,5 @@ from . import termination
 from . import recombination
 from . import mutation
 from . import selection
+from . import analysis
 from . import map_handler

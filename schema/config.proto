@@ -32,6 +32,13 @@ message RandomInitializationParams {
   double max_value = 3;
 }
 
+message PrintTrajOnMapParams {
+  string map_yaml_path = 1;
+  double subsample_factor = 2;
+  double plot_pause_time_s = 3;
+}
+
+
 message OptimizationConfig {
   int32 iterations = 1;
   double epsilon = 2;
@@ -43,9 +50,10 @@ message OptimizationConfig {
   google.protobuf.Any recombination_params = 6;
   google.protobuf.Any selection_params = 7;
   google.protobuf.Any mutation_params = 8;
+  google.protobuf.Any analysis_params = 9;
 
   oneof model {
-    ModelLinear model_linear = 9;
-    ModelNonLinear model_non_linear = 10;
+    ModelLinear model_linear = 10;
+    ModelNonLinear model_non_linear = 11;
   }
 }

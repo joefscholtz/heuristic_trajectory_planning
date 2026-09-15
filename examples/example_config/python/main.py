@@ -42,7 +42,9 @@ def load_and_run():
 
     print(f"[Main] Loaded OptimizationConfig with {config.iterations} iterations.")
 
-    [init_s, term_s, recomb_s, select_s, mut_s] = htp.build_and_get_strategies(config)
+    [init_s, term_s, recomb_s, select_s, mut_s, anal_s] = htp.build_and_get_strategies(
+        config
+    )
 
     ga = htp.GeneticAlgorithm(
         initialization_fn=init_s,
@@ -50,6 +52,7 @@ def load_and_run():
         recombination_fn=recomb_s,
         selection_fn=select_s,
         mutation_fn=mut_s,
+        analysis_fn=anal_s,
     )
 
     final_pop = ga.run()

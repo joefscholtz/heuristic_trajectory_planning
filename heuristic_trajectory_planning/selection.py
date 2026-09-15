@@ -1,4 +1,3 @@
-# heuristic_trajectory_planning/selection.py
 import config_pb2
 from .core import SelectionStrategy, register_selection
 

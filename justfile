@@ -30,7 +30,8 @@ run:
   uv run examples/example_config/python/main.py
 
 clean:
-  @echo "Not implemented yet."
+  rm -rf build .venv .cache external/vcpkg
+  git submodule update --init --recursive
 
 hard-clean: && clean
   @echo "Not implemented yet."
