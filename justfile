@@ -1,11 +1,14 @@
 alias i:= init
 alias b:= build
+alias bi:= build-image
 alias c:= clean
 # alias e:= enter
 alias r:=run
 
 container_name:='heuristic_trajectory_planning'
 docker-compose-service:='heuristic_trajectory_planning-app'
+
+set windows-shell := ["powershell.exe", "-NoProfile", "-Command"]
 
 default:
   just --list
@@ -35,6 +38,21 @@ hard-clean: && clean
 reset:
   @echo "Not implemented yet."
 
+# Generate the core base Python protobuf schema
+gen-base-py-proto:
+    @echo Generating base Python Protobuf files...
+    uv run python -c "import os; os.makedirs('build/schema', exist_ok=True)"
+    uv run python -m grpc_tools.protoc -I=schema --python_out=build/schema schema/config.proto
+    @echo Base schemas generated successfully!
+
+# Generate Python protobuf schemas for a specific example
+# Usage: just gen-example-py-proto examples/example_config/schema
+gen-example-py-proto example_schema_dir:
+    @echo Generating Python Protobuf files for {{example_schema_dir}}...
+    uv run python -c "import os; os.makedirs('build/{{example_schema_dir}}', exist_ok=True)"
+    uv run python -m grpc_tools.protoc -I=schema -I={{example_schema_dir}} --python_out=build/{{example_schema_dir}} {{example_schema_dir}}/*.proto
+    @echo Example schemas generated successfully!
+
 # test:
 #   @echo "Not implemented yet."
 #
@@ -55,17 +73,17 @@ reset:
 
 # Using Docker
 
-# down:
-#   docker stop {{container_name}} || true
-#   docker rm {{container_name}} || true
-#   docker compose -f docker-compose.yml down || true
-#
-# build-image args="--progress='auto'": down
-#   @echo "Use 'just build-image --progress=\"plain\"' for more information. Options: auto (default), tty, plain, json, quiet"
-#   docker compose {{args}} -f docker-compose.yml build;
-#
-# enter: down && down
-#   docker compose -f docker-compose.yml run -it --rm --name {{container_name}} {{docker-compose-service}} bash
-#
-# dev target: down && down
-#     docker-compose run --rm {{docker-compose-service}} just {{target}}
+down:
+  docker stop {{container_name}} || true
+  docker rm {{container_name}} || true
+  docker compose -f docker-compose.yml down || true
+
+build-image args="--progress='auto'": down
+  @echo "Use 'just build-image --progress=\"plain\"' for more information. Options: auto (default), tty, plain, json, quiet"
+  docker compose {{args}} -f docker-compose.yml build;
+
+enter: down && down
+  docker compose -f docker-compose.yml run -it --rm --name {{container_name}} {{docker-compose-service}} bash
+
+dev target: down && down
+    docker-compose run --rm {{docker-compose-service}} just {{target}}

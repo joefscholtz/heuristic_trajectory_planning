@@ -22,6 +22,10 @@ message TournamentSelectionParams {
   int32 tournament_size = 1;
 }
 
+message CustomSelectionParams {
+  int32 tournament_size = 1;
+}
+
 message RandomInitializationParams {
   int32 population_size = 1;
   double min_value = 2;

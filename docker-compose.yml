@@ -1,0 +1,28 @@
+services:
+  heuristic_trajectory_planning-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: heuristic_trajectory_planning:latest
+    volumes:
+      - .:/project:z
+      - /dev:/dev
+      - /tmp/.X11-unix:/tmp/.X11-unix:rw # Required for Linux X11 socket
+      - ~/.Xauthority:/root/.Xauthority:ro # Passes X11 security cookie
+      - docker-env-vol:/opt/docker-env
+    working_dir: /project
+    environment:
+      - IS_DOCKER=true
+      - UV_PROJECT_ENVIRONMENT=/opt/docker-env/.venv
+      - UV_CACHE_DIR=/opt/docker-env/.cache
+      - UV_PYTHON_INSTALL_DIR=/opt/docker-env/python_installs
+      - UV_LINK_MODE=hardlink
+      - DISPLAY=${DISPLAY}
+      - QT_X11_NO_MITSHM=1 # Prevents graphical tearing/crashing in Docker
+      - MPLBACKEND=TkAgg # Forces Matplotlib to use a windowed GUI backend
+    device_cgroup_rules:
+      - "c 188:* rwm" # USB serial devices /dev/ttyUSB* (major=188)
+    user: "root"
+
+volumes:
+  docker-env-vol:
