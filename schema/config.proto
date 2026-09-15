@@ -43,17 +43,19 @@ message OptimizationConfig {
   int32 iterations = 1;
   double epsilon = 2;
   Strategy strategy = 3;
+  repeated double start_config = 4;
+  repeated double end_config = 5;
   
   // Pluggable GA Parameters
-  google.protobuf.Any initialization_params = 4;
-  google.protobuf.Any termination_params = 5;
-  google.protobuf.Any recombination_params = 6;
-  google.protobuf.Any selection_params = 7;
-  google.protobuf.Any mutation_params = 8;
-  google.protobuf.Any analysis_params = 9;
+  google.protobuf.Any initialization_params = 6;
+  google.protobuf.Any termination_params = 7;
+  google.protobuf.Any recombination_params = 8;
+  google.protobuf.Any selection_params = 9;
+  google.protobuf.Any mutation_params = 10;
+  google.protobuf.Any analysis_params = 11;
 
   oneof model {
-    ModelLinear model_linear = 10;
-    ModelNonLinear model_non_linear = 11;
+    ModelLinear model_linear = 12;
+    ModelNonLinear model_non_linear = 13;
   }
 }

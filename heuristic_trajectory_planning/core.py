@@ -172,14 +172,32 @@ class DummyIndividual(BaseIndividual):
 
 class DummyInitialization(InitializationStrategy):
     def __init__(self, payload=None, global_config=None):
+        self.start_config = global_config.start_config
+        self.end_config = global_config.end_config
         pass
 
     def __call__(self) -> list[BaseIndividual]:
         print("[Init] Generating initial dummy population")
         # Return dummy trajectories in the center of the map
         return [
-            DummyIndividual([(0.0, 0.0), (1.0, 1.0), (2.0, 0.0)]),
-            DummyIndividual([(0.0, 0.5), (1.5, 1.5), (0.5, 0.5)]),
+            DummyIndividual(
+                [
+                    (self.start_config[0], self.start_config[1]),
+                    (0.0, 0.0),
+                    (1.0, 0.0),
+                    (2.0, 0.0),
+                    (self.end_config[0], self.end_config[1]),
+                ]
+            ),
+            DummyIndividual(
+                [
+                    (self.start_config[0], self.start_config[1]),
+                    (0.0, 0.5),
+                    (1.5, 1.5),
+                    (0.5, 0.5),
+                    (self.end_config[0], self.end_config[1]),
+                ]
+            ),
         ]
 
 

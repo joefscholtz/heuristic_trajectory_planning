@@ -35,7 +35,28 @@ class PrintTrajOnMap(AnalysisClass):
         ind = population[0]
         x_coords, y_coords = ind.get_path_coordinates()
         self.ax.plot(
-            x_coords, y_coords, color="blue", marker="o", alpha=0.6, linewidth=2
+            x_coords,
+            y_coords,
+            color="blue",
+            alpha=0.6,
+            linewidth=2,
+            marker="o",
+        )
+
+        self.ax.plot(
+            x_coords[0],
+            y_coords[0],
+            color="red",
+            marker="o",
+            alpha=0.6,
+        )
+
+        self.ax.plot(
+            x_coords[-1],
+            y_coords[-1],
+            color="red",
+            marker="o",
+            alpha=0.6,
         )
 
         # Update title for current generation

@@ -1,6 +1,8 @@
 {
   "iterations": 10,
   "epsilon": 0.0001,
+  "start_config": [0.0, 0.0],
+  "end_config": [1.0, 1.0],
   "strategy": "STRATEGY_EDITOR",
   "analysis_params": {
     "@type": "type.googleapis.com/htp.config.PrintTrajOnMapParams",
