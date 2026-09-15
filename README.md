@@ -84,7 +84,7 @@ without just
   ln -sf build/compile_commands.json .
 ```
 
-### Building only proto parsing for Python
+### Building only protobuf parsing for Python
 
 ```bash
 just gen-base-py-proto
