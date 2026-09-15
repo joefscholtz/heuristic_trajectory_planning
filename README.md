@@ -116,3 +116,7 @@ uv run examples/example_map/python/main.py
 ### schema:
 
 - [ ]
+
+### Docker
+
+- [] Fix matplotlib not showing one Docker container
