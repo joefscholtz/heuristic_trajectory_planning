@@ -36,6 +36,28 @@ hard-clean: && clean
 reset:
   @echo "Not implemented yet."
 
+# Generate the core base Python protobuf schema
+gen-base-py-proto:
+    @echo "Generating base Python Protobuf files..."
+    mkdir -p build/schema
+    uv run python -m grpc_tools.protoc \
+        -I=schema \
+        --python_out=build/schema \
+        schema/config.proto
+    @echo "Base schemas generated successfully!"
+
+# Generate Python protobuf schemas for a specific example
+# Usage: just gen-example-py-proto examples/example_config/schema
+gen-example-py-proto example_schema_dir:
+    @echo "Generating Python Protobuf files for {{example_schema_dir}}..."
+    mkdir -p build/{{example_schema_dir}}
+    uv run python -m grpc_tools.protoc \
+        -I=schema \
+        -I={{example_schema_dir}} \
+        --python_out=build/{{example_schema_dir}} \
+        {{example_schema_dir}}/*.proto
+    @echo "Example schemas generated successfully!"
+
 # test:
 #   @echo "Not implemented yet."
 #

@@ -84,6 +84,16 @@ without just
   ln -sf build/compile_commands.json .
 ```
 
+### Building only proto parsing for Python
+
+```bash
+just gen-base-py-proto
+```
+
+```bash
+just gen-example-py-proto examples/example_config/schema
+```
+
 ## Running examples
 
 using just:
