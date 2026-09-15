@@ -8,6 +8,8 @@ alias r:=run
 container_name:='heuristic_trajectory_planning'
 docker-compose-service:='heuristic_trajectory_planning-app'
 
+set windows-shell := ["powershell.exe", "-NoProfile", "-Command"]
+
 default:
   just --list
 
